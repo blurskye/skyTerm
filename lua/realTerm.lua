@@ -23,7 +23,12 @@ function M.setup(config)
 end
 
 function M.toggle_term()
-    if M.term_buf == nil or not vim.api.nvim_buf_is_valid(M.term_buf) then
+    if vim.api.nvim_buf_get_name(0) == " TERMINAL" then
+        -- Store the current mode
+        M.term_mode = vim.api.nvim_get_mode().mode
+        vim.api.nvim_win_hide(M.term_win)
+        M.term_win = nil
+    elseif M.term_buf == nil or not vim.api.nvim_buf_is_valid(M.term_buf) then
         M.term_buf = vim.api.nvim_create_buf(false, true)
         M.term_win = vim.api.nvim_open_win(M.term_buf, true, {
             relative = "editor",
@@ -55,6 +60,11 @@ function M.toggle_term()
                 col = 0,
                 row = 0,
             })
+
+            -- Restore the mode
+            if M.term_mode == 'i' or M.term_mode == 'ic' then
+                vim.cmd('startinsert')
+            end
         end
     end
 end

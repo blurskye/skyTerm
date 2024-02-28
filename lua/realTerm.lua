@@ -67,7 +67,7 @@ function M.toggle_term()
                 vim.defer_fn(function()
                     vim.api.nvim_set_current_win(M.term_win)
                     vim.cmd('startinsert')
-                end, 100)
+                end, 500)
             end
         end
     end

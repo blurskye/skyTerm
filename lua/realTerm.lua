@@ -53,5 +53,5 @@ end
 -- ]])
 
 -- vim.api.nvim_set_keymap('n', '<F5>', ':lua require("init").toggle_term()<CR>', { noremap = true, silent = true })
-
+print("M")
 return M

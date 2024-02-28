@@ -4,6 +4,11 @@ local M = {}
 
 M.term_buf = nil
 
+M.term_buf = nil
+M.config = { -- Initialize M.config
+    toggle_key = '<F8>',
+}
+
 function M.setup(config)
     M.config = vim.tbl_extend('force', M.config, config or {})
 

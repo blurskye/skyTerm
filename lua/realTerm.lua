@@ -18,6 +18,24 @@ function M.setup(config)
     vim.cmd([[
       command! -nargs=1 SendToTerminal lua require('realTerm').send_to_term(<q-args>)
     ]])
+    local function terminal_component()
+        if require("realTerm").term_buf ~= nil and vim.api.nvim_buf_is_valid(require("realTerm").term_buf) then
+            return " TERMINAL"
+        else
+            return ""
+        end
+    end
+
+    require('lualine').setup {
+        options = {
+            -- your lualine options
+        },
+        sections = {
+            lualine_a = { terminal_component, 'mode' },
+            -- other lualine sections
+        },
+        -- other lualine settings
+    }
 end
 
 function M.toggle_term()

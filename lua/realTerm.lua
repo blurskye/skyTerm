@@ -64,11 +64,12 @@ function M.toggle_term()
         })
         vim.api.nvim_buf_set_option(M.term_buf, 'buftype', 'nofile')
         vim.api.nvim_buf_set_option(M.term_buf, 'bufhidden', 'hide')
-        vim.fn.termopen("$SHELL")
 
         -- Set buffer name to "TERMINAL" if it's not already
-        if vim.api.nvim_buf_get_name(M.term_buf) ~= "TERMINAL" then
+        if vim.api.nvim_buf_get_name(M.term_bufx) ~= "TERMINAL" then
             vim.api.nvim_buf_set_name(M.term_buf, "TERMINAL")
+            vim.fn.termopen("$SHELL")
+            M.term_bufx = "TERMINAL"
         end
 
         -- Hide line numbers in the terminal window

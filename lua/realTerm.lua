@@ -52,6 +52,9 @@ end
 --     end
 -- end
 
+-- Add a flag to check if the terminal has been opened before
+M.term_opened = false
+
 function M.toggle_term()
     if M.term_buf == nil or not vim.api.nvim_buf_is_valid(M.term_buf) then
         M.term_buf = vim.api.nvim_create_buf(false, true)
@@ -65,10 +68,11 @@ function M.toggle_term()
         vim.api.nvim_buf_set_option(M.term_buf, 'buftype', 'nofile')
         vim.api.nvim_buf_set_option(M.term_buf, 'bufhidden', 'hide')
 
-        -- Set buffer name to "TERMINAL" if it's not already
-        if vim.api.nvim_buf_get_name(M.term_buf) ~= "TERMINAL" then
-            vim.api.nvim_buf_set_name(M.term_buf, "TERMINAL")
+        -- Only run this part of the code if the terminal has not been opened before
+        if not M.term_opened then
             vim.fn.termopen("$SHELL")
+            vim.api.nvim_buf_set_name(M.term_buf, "TERMINAL")
+            M.term_opened = true
         end
 
         -- Hide line numbers in the terminal window

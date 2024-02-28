@@ -35,7 +35,7 @@ function M.toggle_term()
         vim.fn.termopen("$SHELL")
 
         -- Set buffer name to "TERMINAL"
-        vim.api.nvim_buf_set_name(M.term_buf, "TERMINAL")
+        vim.api.nvim_buf_set_name(M.term_buf, "Real-TERMINAL")
 
         -- Hide line numbers in the terminal window
         vim.api.nvim_win_set_option(win_id, 'number', false)

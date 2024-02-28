@@ -41,7 +41,7 @@ function M.toggle_term()
         vim.api.nvim_win_set_option(M.term_win, 'number', false)
         vim.api.nvim_win_set_option(M.term_win, 'relativenumber', false)
     else
-        if vim.api.nvim_win_is_valid(M.term_win) then
+        if M.term_win ~= nil and vim.api.nvim_win_is_valid(M.term_win) then
             vim.api.nvim_win_hide(M.term_win)
             M.term_win = nil
         else

@@ -33,6 +33,7 @@ function M.toggle_term()
         vim.api.nvim_buf_set_option(M.term_buf, 'buftype', 'nofile')
         vim.api.nvim_buf_set_option(M.term_buf, 'bufhidden', 'hide')
         vim.fn.termopen("$SHELL")
+        vim.cmd("startinsert")
 
         -- Set buffer name to "TERMINAL"
         vim.api.nvim_buf_set_name(M.term_buf, " TERMINAL")

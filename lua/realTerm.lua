@@ -26,7 +26,7 @@ function M.toggle_term()
         local win_id = vim.api.nvim_open_win(M.term_buf, true, {
             relative = "editor",
             width = vim.o.columns,
-            height = vim.o.lines,
+            height = vim.o.lines - 1, -- Subtract 1 to leave space for the status line
             col = 0,
             row = 0,
         })

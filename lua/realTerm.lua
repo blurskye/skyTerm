@@ -33,6 +33,10 @@ function M.toggle_term()
         vim.api.nvim_buf_set_option(M.term_buf, 'buftype', 'nofile')
         vim.api.nvim_buf_set_option(M.term_buf, 'bufhidden', 'hide')
         vim.fn.termopen("$SHELL")
+
+        -- Hide line numbers in the terminal window
+        vim.api.nvim_win_set_option(win_id, 'number', false)
+        vim.api.nvim_win_set_option(win_id, 'relativenumber', false)
     else
         local windows = vim.api.nvim_list_wins()
         for _, win_id in ipairs(windows) do

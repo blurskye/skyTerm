@@ -62,6 +62,9 @@ function M.toggle_term()
             })
 
             -- Restore the mode
+            if M.term_mode == 'i' or M.term_mode == 'ic' then
+                vim.defer_fn(function() vim.cmd('startinsert') end, 100)
+            end
         end
     end
 end

@@ -12,9 +12,9 @@ M.config = { -- Initialize M.config
 function M.setup(config)
     M.config = vim.tbl_extend('force', M.config, config or {})
 
-    vim.api.nvim_set_keymap('n', M.config.toggle_key, ':lua require("realTerm").toggle_term()<CR>',
+    vim.api.nvim_set_keymap('n', M.config.toggle_key, '<cmd>lua require("realTerm").toggle_term()<CR>',
         { noremap = true, silent = true })
-    vim.api.nvim_set_keymap('t', M.config.toggle_key, ':lua require("realTerm").toggle_term()<CR>',
+    vim.api.nvim_set_keymap('t', M.config.toggle_key, '<cmd>lua require("realTerm").toggle_term()<CR>',
         { noremap = true, silent = true })
 
     vim.cmd([[

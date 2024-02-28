@@ -14,6 +14,8 @@ function M.setup(config)
 
     vim.api.nvim_set_keymap('n', M.config.toggle_key, ':lua require("realTerm").toggle_term()<CR>',
         { noremap = true, silent = true })
+    vim.api.nvim_set_keymap('t', M.config.toggle_key, ':lua require("realTerm").toggle_term()<CR>',
+        { noremap = true, silent = true })
 
     vim.cmd([[
       command! -nargs=1 SendToTerminal lua require('realTerm').send_to_term(<q-args>)
@@ -21,11 +23,7 @@ function M.setup(config)
 end
 
 function M.toggle_term()
-    if vim.api.nvim_buf_get_name(0) == " TERMINAL" then
-        vim.cmd('stopinsert')
-        vim.api.nvim_win_hide(M.term_win)
-        M.term_win = nil
-    elseif M.term_buf == nil or not vim.api.nvim_buf_is_valid(M.term_buf) then
+    if M.term_buf == nil or not vim.api.nvim_buf_is_valid(M.term_buf) then
         M.term_buf = vim.api.nvim_create_buf(false, true)
         M.term_win = vim.api.nvim_open_win(M.term_buf, true, {
             relative = "editor",

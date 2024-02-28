@@ -69,8 +69,8 @@ function M.toggle_term()
         vim.api.nvim_buf_set_option(M.term_buf, 'bufhidden', 'hide')
 
         -- Only run this part of the code if the terminal has not been opened before
+        vim.fn.termopen("$SHELL")
         if not M.term_opened then
-            vim.fn.termopen("$SHELL")
             vim.api.nvim_buf_set_name(M.term_buf, "TERMINAL")
             M.term_opened = true
         end

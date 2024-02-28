@@ -56,8 +56,23 @@ end
 M.term_opened = false
 
 function M.toggle_term()
-    if M.term_buf == nil or not vim.api.nvim_buf_is_valid(M.term_buf) then
-        M.term_buf = vim.api.nvim_create_buf(false, true)
+    -- Check if the terminal buffer is already open in a window
+    local bufwinid = vim.fn.bufwinid(M.term_buf)
+    if bufwinid ~= -1 then
+        -- If it is, hide the window
+        vim.api.nvim_win_close(bufwinid, true)
+    else
+        -- If it's not, check if the terminal buffer is valid
+        if M.term_buf == nil or not vim.api.nvim_buf_is_valid(M.term_buf) then
+            -- If it's not, create a new terminal buffer
+            M.term_buf = vim.api.nvim_create_buf(false, true)
+            vim.api.nvim_buf_set_option(M.term_buf, 'buftype', 'nofile')
+            vim.api.nvim_buf_set_option(M.term_buf, 'bufhidden', 'hide')
+            vim.fn.termopen("$SHELL")
+            vim.api.nvim_buf_set_name(M.term_buf, "TERMINAL")
+        end
+
+        -- Open the terminal in a new window
         local win_id = vim.api.nvim_open_win(M.term_buf, true, {
             relative = "editor",
             width = vim.o.columns,
@@ -65,28 +80,10 @@ function M.toggle_term()
             col = 0,
             row = 0,
         })
-        vim.api.nvim_buf_set_option(M.term_buf, 'buftype', 'nofile')
-        vim.api.nvim_buf_set_option(M.term_buf, 'bufhidden', 'hide')
-
-        -- Only run this part of the code if the terminal has not been opened before
-        vim.fn.termopen("$SHELL")
-        if not M.term_opened then
-            vim.api.nvim_buf_set_name(M.term_buf, "TERMINAL")
-            M.term_opened = true
-        end
 
         -- Hide line numbers in the terminal window
         vim.api.nvim_win_set_option(win_id, 'number', false)
         vim.api.nvim_win_set_option(win_id, 'relativenumber', false)
-    else
-        local windows = vim.api.nvim_list_wins()
-        for _, win_id in ipairs(windows) do
-            if vim.api.nvim_win_get_buf(win_id) == M.term_buf then
-                vim.api.nvim_win_close(win_id, true)
-                break
-            end
-        end
-        M.term_buf = nil
     end
 end
 

@@ -10,10 +10,11 @@ M.config = { -- Initialize M.config
 function M.setup(config)
     M.config = vim.tbl_extend('force', M.config, config or {})
 
-    vim.api.nvim_set_keymap('n', M.config.toggle_key, '<cmd>lua require("sky-term").toggle_term()<CR>',
-        { noremap = true, silent = true })
-    vim.api.nvim_set_keymap('t', M.config.toggle_key, '<cmd>lua require("sky-term").toggle_term()<CR>',
-        { noremap = true, silent = true })
+    local modes = { 'n', 'i', 'v', 's', 'c', 'o', 't', 'r' }
+    for _, mode in ipairs(modes) do
+        vim.api.nvim_set_keymap(mode, M.config.toggle_key, '<cmd>lua require("sky-term").toggle_term()<CR>',
+            { noremap = true, silent = true })
+    end
 
     vim.cmd([[
       command! -nargs=1 SendToTerminal lua require('sky-term').send_to_term(<q-args>)
@@ -21,11 +22,23 @@ function M.setup(config)
 end
 
 function M.toggle_term()
+    M.userMode = vim.api.nvim_get_mode().mode
     if vim.api.nvim_buf_get_name(0) == " TERMINAL" then
         -- Store the current mode
         M.term_mode = vim.api.nvim_get_mode().mode
         vim.api.nvim_win_hide(M.term_win)
         M.term_win = nil
+        if M.userMode == 'n' then
+            vim.cmd('normal! <Esc>')
+        elseif M.userMode == 'i' then
+            vim.cmd('startinsert')
+        elseif M.userMode == 'v' then
+            vim.cmd('normal! v')
+        elseif M.userMode == 'V' then
+            vim.cmd('normal! V')
+        elseif M.userMode == '^V' then
+            vim.cmd('normal! ^V')
+        end
     elseif M.term_buf == nil or not vim.api.nvim_buf_is_valid(M.term_buf) then
         M.term_buf = vim.api.nvim_create_buf(false, true)
         M.term_win = vim.api.nvim_open_win(M.term_buf, true, {
@@ -71,5 +84,4 @@ function M.send_to_term(cmd)
     end
 end
 
-print("M")
 return M

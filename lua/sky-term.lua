@@ -22,7 +22,6 @@ function M.setup(config)
 end
 
 function M.toggle_term()
-    M.userMode = vim.api.nvim_get_mode().mode
     if vim.api.nvim_buf_get_name(0) == " TERMINAL" then
         -- Store the current mode
         M.term_mode = vim.api.nvim_get_mode().mode
@@ -42,6 +41,8 @@ function M.toggle_term()
             end
         end, 500)
     elseif M.term_buf == nil or not vim.api.nvim_buf_is_valid(M.term_buf) then
+        M.userMode = vim.api.nvim_get_mode().mode
+
         M.term_buf = vim.api.nvim_create_buf(false, true)
         M.term_win = vim.api.nvim_open_win(M.term_buf, true, {
             relative = "editor",
@@ -61,6 +62,8 @@ function M.toggle_term()
         vim.api.nvim_win_set_option(M.term_win, 'number', false)
         vim.api.nvim_win_set_option(M.term_win, 'relativenumber', false)
     else
+        M.userMode = vim.api.nvim_get_mode().mode
+
         if M.term_win ~= nil and vim.api.nvim_win_is_valid(M.term_win) then
             vim.api.nvim_win_hide(M.term_win)
             M.term_win = nil

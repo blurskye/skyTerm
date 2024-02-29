@@ -10,7 +10,7 @@ M.config = { -- Initialize M.config
 function M.setup(config)
     M.config = vim.tbl_extend('force', M.config, config or {})
 
-    local modes = { 'n', 'i', 'v', 's', 'c', 'o', 't', 'r' }
+    local modes = { 'n', 'i', 'v', 's', 'c', 'o', 't' }
     for _, mode in ipairs(modes) do
         vim.api.nvim_set_keymap(mode, M.config.toggle_key, '<cmd>lua require("sky-term").toggle_term()<CR>',
             { noremap = true, silent = true })

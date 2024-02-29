@@ -28,17 +28,19 @@ function M.toggle_term()
         M.term_mode = vim.api.nvim_get_mode().mode
         vim.api.nvim_win_hide(M.term_win)
         M.term_win = nil
-        if M.userMode == 'n' then
-            vim.cmd('normal! <Esc>')
-        elseif M.userMode == 'i' then
-            vim.cmd('startinsert')
-        elseif M.userMode == 'v' then
-            vim.cmd('normal! v')
-        elseif M.userMode == 'V' then
-            vim.cmd('normal! V')
-        elseif M.userMode == '^V' then
-            vim.cmd('normal! ^V')
-        end
+        vim.defer_fn(function()
+            if M.userMode == 'n' then
+                vim.cmd('normal! <Esc>')
+            elseif M.userMode == 'i' then
+                vim.cmd('startinsert')
+            elseif M.userMode == 'v' then
+                vim.cmd('normal! v')
+            elseif M.userMode == 'V' then
+                vim.cmd('normal! V')
+            elseif M.userMode == '^V' then
+                vim.cmd('normal! ^V')
+            end
+        end, 500)
     elseif M.term_buf == nil or not vim.api.nvim_buf_is_valid(M.term_buf) then
         M.term_buf = vim.api.nvim_create_buf(false, true)
         M.term_win = vim.api.nvim_open_win(M.term_buf, true, {

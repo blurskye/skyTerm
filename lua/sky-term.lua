@@ -27,7 +27,7 @@ function M.toggle_term()
         -- Store the current mode
         M.term_mode = vim.api.nvim_get_mode().mode
         vim.api.nvim_win_hide(M.term_win)
-        M.term_win = nil
+        -- M.term_win = nil
         vim.api.nvim_set_current_buf(M.prev_buf)
         vim.api.nvim_set_mode(M.userMode)
     elseif M.term_buf == nil or not vim.api.nvim_buf_is_valid(M.term_buf) then

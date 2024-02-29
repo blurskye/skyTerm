@@ -39,7 +39,7 @@ function M.toggle_term()
             elseif M.userMode == '^V' then
                 vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-V>', true, true, true), 'n', true)
             end
-        end, 100)
+        end, 500)
     elseif M.term_buf == nil or not vim.api.nvim_buf_is_valid(M.term_buf) then
         M.userMode = vim.api.nvim_get_mode().mode
 

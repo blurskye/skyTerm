@@ -65,12 +65,7 @@ function M.toggle_term()
             -- Restore the mode
         end
     end
-    if M.term_mode == 'i' or M.term_mode == 't' then
-        vim.defer_fn(function()
-            vim.api.nvim_set_current_win(M.term_win)
-            vim.cmd('startinsert')
-        end, 500)
-    end
+    vim.cmd('startinsert')
 end
 
 function M.send_to_term(cmd)

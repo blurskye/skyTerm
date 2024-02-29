@@ -81,11 +81,9 @@ function M.toggle_term()
     else
         -- If the terminal buffer doesn't exist or is invalid, or if the process in the terminal buffer has exited, create a new one
         local job_id = M.term_buf and vim.api.nvim_buf_is_valid(M.term_buf) and
-            vim.api.nvim_buf_get_option(M.term_buf, 'channel') and
             vim.fn.jobpid(vim.api.nvim_buf_get_option(M.term_buf, 'channel'))
         if not M.term_buf or not vim.api.nvim_buf_is_valid(M.term_buf) or (job_id and vim.fn.jobstop(job_id) ~= 0) then
             M.term_buf = vim.api.nvim_create_buf(false, true)
-            vim.api.nvim_buf_set_option(M.term_buf, 'buftype', 'terminal')
         end
 
         -- Create a new window for the terminal buffer

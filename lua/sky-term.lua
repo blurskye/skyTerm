@@ -29,17 +29,17 @@ function M.toggle_term()
         M.term_win = nil
         vim.defer_fn(function()
             if M.userMode == 'n' then
-                vim.cmd('normal! <Esc>')
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, true, true), 'n', true)
             elseif M.userMode == 'i' then
-                vim.cmd('startinsert')
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('i', true, true, true), 'n', true)
             elseif M.userMode == 'v' then
-                vim.cmd('normal! v')
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('v', true, true, true), 'n', true)
             elseif M.userMode == 'V' then
-                vim.cmd('normal! V')
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('V', true, true, true), 'n', true)
             elseif M.userMode == '^V' then
-                vim.cmd('normal! ^V')
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-V>', true, true, true), 'n', true)
             end
-        end, 500)
+        end, 100)
     elseif M.term_buf == nil or not vim.api.nvim_buf_is_valid(M.term_buf) then
         M.userMode = vim.api.nvim_get_mode().mode
 

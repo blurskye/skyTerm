@@ -3,9 +3,12 @@
 local M = {}
 
 M.term_buf = nil
-M.config = { -- Initialize M.config
+M.config = {                     -- Initialize M.config
     toggle_key = '<F8>',
 }
+M.config.shell = "/bin/zsh"      -- Set the shell to zsh
+
+
 
 function M.setup(config)
     M.config = vim.tbl_extend('force', M.config, config or {})
@@ -80,8 +83,9 @@ function M.toggle_term()
         M.term_opened = false
     else
         -- If the terminal buffer doesn't exist or is invalid, or if the process in the terminal buffer has exited, create a new one
-        local job_id = M.term_buf and vim.api.nvim_buf_is_valid(M.term_buf) and
-            vim.fn.jobpid(vim.api.nvim_buf_get_option(M.term_buf, 'channel'))
+        local channel = M.term_buf and vim.api.nvim_buf_is_valid(M.term_buf) and
+        vim.api.nvim_buf_get_option(M.term_buf, 'channel')
+        local job_id = channel and #channel > 0 and vim.fn.jobpid(channel)
         if not M.term_buf or not vim.api.nvim_buf_is_valid(M.term_buf) or (job_id and vim.fn.jobstop(job_id) ~= 0) then
             M.term_buf = vim.api.nvim_create_buf(false, true)
         end

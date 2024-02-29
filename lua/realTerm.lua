@@ -3,8 +3,6 @@
 local M = {}
 
 M.term_buf = nil
-
-M.term_buf = nil
 M.config = { -- Initialize M.config
     toggle_key = '<F8>',
 }
@@ -12,13 +10,13 @@ M.config = { -- Initialize M.config
 function M.setup(config)
     M.config = vim.tbl_extend('force', M.config, config or {})
 
-    vim.api.nvim_set_keymap('n', M.config.toggle_key, '<cmd>lua require("realTerm").toggle_term()<CR>',
+    vim.api.nvim_set_keymap('n', M.config.toggle_key, '<cmd>lua require("skyTerm").toggle_term()<CR>',
         { noremap = true, silent = true })
-    vim.api.nvim_set_keymap('t', M.config.toggle_key, '<cmd>lua require("realTerm").toggle_term()<CR>',
+    vim.api.nvim_set_keymap('t', M.config.toggle_key, '<cmd>lua require("skyTerm").toggle_term()<CR>',
         { noremap = true, silent = true })
 
     vim.cmd([[
-      command! -nargs=1 SendToTerminal lua require('realTerm').send_to_term(<q-args>)
+      command! -nargs=1 SendToTerminal lua require('skyTerm').send_to_term(<q-args>)
     ]])
 end
 
@@ -73,10 +71,5 @@ function M.send_to_term(cmd)
     end
 end
 
--- vim.cmd([[
---   command! -nargs=1 SendToTerminal lua require('init').send_to_term(<q-args>)
--- ]])
-
--- vim.api.nvim_set_keymap('n', '<F5>', ':lua require("init").toggle_term()<CR>', { noremap = true, silent = true })
 print("M")
 return M

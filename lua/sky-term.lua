@@ -21,27 +21,18 @@ function M.setup(config)
     ]])
 end
 
+M.userMode = 'n'
 function M.toggle_term()
     if vim.api.nvim_buf_get_name(0) == " TERMINAL" then
         -- Store the current mode
         M.term_mode = vim.api.nvim_get_mode().mode
         vim.api.nvim_win_hide(M.term_win)
         M.term_win = nil
-        vim.defer_fn(function()
-            if M.userMode == 'n' then
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, true, true), 'n', true)
-            elseif M.userMode == 'i' then
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('i', true, true, true), 'n', true)
-            elseif M.userMode == 'v' then
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('v', true, true, true), 'n', true)
-            elseif M.userMode == 'V' then
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('V', true, true, true), 'n', true)
-            elseif M.userMode == '^V' then
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-V>', true, true, true), 'n', true)
-            end
-        end, 500)
+        vim.api.nvim_set_current_buf(M.prev_buf)
+        vim.api.nvim_set_mode(M.userMode)
     elseif M.term_buf == nil or not vim.api.nvim_buf_is_valid(M.term_buf) then
         M.userMode = vim.api.nvim_get_mode().mode
+        M.prev_buf = vim.api.nvim_get_current_buf()
 
         M.term_buf = vim.api.nvim_create_buf(false, true)
         M.term_win = vim.api.nvim_open_win(M.term_buf, true, {
@@ -63,6 +54,7 @@ function M.toggle_term()
         vim.api.nvim_win_set_option(M.term_win, 'relativenumber', false)
     else
         M.userMode = vim.api.nvim_get_mode().mode
+        M.prev_buf = vim.api.nvim_get_current_buf()
 
         if M.term_win ~= nil and vim.api.nvim_win_is_valid(M.term_win) then
             vim.api.nvim_win_hide(M.term_win)

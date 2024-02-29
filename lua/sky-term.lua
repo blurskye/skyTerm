@@ -10,13 +10,13 @@ M.config = { -- Initialize M.config
 function M.setup(config)
     M.config = vim.tbl_extend('force', M.config, config or {})
 
-    vim.api.nvim_set_keymap('n', M.config.toggle_key, '<cmd>lua require("skyTerm").toggle_term()<CR>',
+    vim.api.nvim_set_keymap('n', M.config.toggle_key, '<cmd>lua require("sky-term").toggle_term()<CR>',
         { noremap = true, silent = true })
-    vim.api.nvim_set_keymap('t', M.config.toggle_key, '<cmd>lua require("skyTerm").toggle_term()<CR>',
+    vim.api.nvim_set_keymap('t', M.config.toggle_key, '<cmd>lua require("sky-term").toggle_term()<CR>',
         { noremap = true, silent = true })
 
     vim.cmd([[
-      command! -nargs=1 SendToTerminal lua require('skyTerm').send_to_term(<q-args>)
+      command! -nargs=1 SendToTerminal lua require('sky-term').send_to_term(<q-args>)
     ]])
 end
 

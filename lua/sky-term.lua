@@ -15,7 +15,7 @@ function M.setup(config)
 
     local modes = { 'n', 'i', 'v', 's', 'c', 'o', 't' }
     for _, mode in ipairs(modes) do
-        vim.api.nvim_set_keymap(mode, M.config.toggle_key, '<cmd>lua require("sky-term").toggle_term_wrapper()<CR>',
+        vim.api.nvim_set_keymap(mode, M.config.toggle_key, '<cmd>lua require("sky-term").toggle_term()<CR>',
             { noremap = true, silent = true })
     end
 

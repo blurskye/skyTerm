@@ -15,7 +15,7 @@ function M.setup(config)
 
     local modes = { 'n', 'i', 'v', 's', 'c', 'o', 't' }
     for _, mode in ipairs(modes) do
-        vim.api.nvim_set_keymap(mode, M.config.toggle_key, '<cmd>lua require("sky-term").toggle_term()<CR>',
+        vim.api.nvim_set_keymap(mode, M.config.toggle_key, '<cmd>lua require("sky-term").toggle_term_wrapper()<CR>',
             { noremap = true, silent = true })
     end
 
@@ -24,7 +24,21 @@ function M.setup(config)
     ]])
 end
 
-M.userMode = 'n'
+function M.toggle_term_wrapper()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local buftype = vim.api.nvim_buf_get_option(bufnr, 'buftype')
+
+    if buftype == 'terminal' then
+        M.toggle_term()
+        if (M.userMode == "i") then
+            vim.cmd('startinsert')
+        end
+    else
+        M.userMode = vim.api.nvim_get_mode().mode
+        M.toggle_term()
+    end
+end
+
 function M.toggle_term()
     if vim.api.nvim_buf_get_name(0) == " TERMINAL" then
         -- Store the current mode
@@ -32,9 +46,7 @@ function M.toggle_term()
         vim.api.nvim_win_hide(M.term_win)
         -- M.term_win = nil
         vim.api.nvim_set_current_buf(M.prev_buf)
-        vim.api.nvim_set_mode(M.userMode)
     elseif M.term_buf == nil or not vim.api.nvim_buf_is_valid(M.term_buf) then
-        M.userMode = vim.api.nvim_get_mode().mode
         M.prev_buf = vim.api.nvim_get_current_buf()
 
         M.term_buf = vim.api.nvim_create_buf(false, true)
@@ -57,7 +69,6 @@ function M.toggle_term()
         vim.api.nvim_win_set_option(M.term_win, 'number', false)
         vim.api.nvim_win_set_option(M.term_win, 'relativenumber', false)
     else
-        M.userMode = vim.api.nvim_get_mode().mode
         M.prev_buf = vim.api.nvim_get_current_buf()
 
         if M.term_win ~= nil and vim.api.nvim_win_is_valid(M.term_win) then

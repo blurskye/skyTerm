@@ -21,6 +21,7 @@ function M.setup(config)
 
     vim.cmd([[
       command! -nargs=1 SendToTerminal lua require('sky-term').send_to_term(<q-args>)
+      command! toggleSkyTerm lua require('sky-term').toggle_term_wrapper()
     ]])
 end
 

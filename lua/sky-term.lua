@@ -90,11 +90,15 @@ end
 function M.send_to_term(cmd)
     if M.term_buf == nil or not vim.api.nvim_buf_is_valid(M.term_buf) then
         M.toggle_term()
+        vim.api.nvim_call_function('term_sendkeys', { M.term_buf, cmd .. "\n" })
+
         -- vim.fn.chansend(vim.api.nvim_buf_get_option(M.term_buf, 'channel'), cmd .. "\n")
     else
+        vim.api.nvim_call_function('term_sendkeys', { M.term_buf, cmd .. "\n" })
+
         -- vim.fn.chansend(vim.api.nvim_buf_get_option(M.term_buf, 'channel'), cmd .. "\n")
     end
-    vim.feedkeys(cmd)
+    -- vim.feedkeys(cmd)
 end
 
 return M

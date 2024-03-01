@@ -32,7 +32,7 @@ function M.toggle_term_wrapper()
         M.toggle_term()
         print(M.userMode)
         if (M.userMode == "i") then
-            vim.defer_fn(function() vim.cmd('startinsert') end, 100)
+            vim.defer_fn(function() vim.cmd('startinsert') end, 50)
         end
     else
         M.userMode = vim.api.nvim_get_mode().mode

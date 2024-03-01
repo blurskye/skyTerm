@@ -88,7 +88,10 @@ function M.toggle_term()
 end
 
 function M.send_to_term(cmd)
-    if M.term_buf == nil or not vim.api.nvim_buf_is_valid(M.term_buf) then
+    local current_buf = vim.api.nvim_get_current_buf()
+    local buftype = vim.api.nvim_buf_get_option(current_buf, 'buftype')
+
+    if M.term_buf == nil or not vim.api.nvim_buf_is_valid(M.term_buf) or buftype ~= "terminal" then
         M.toggle_term()
         -- vim.api.nvim_call_function('term_sendkeys', { M.term_buf, cmd .. "\n" })
 

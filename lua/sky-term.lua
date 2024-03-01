@@ -61,6 +61,12 @@ function M.toggle_term()
         vim.api.nvim_buf_set_option(M.term_buf, 'bufhidden', 'hide')
         vim.fn.termopen("$SHELL")
         vim.cmd('autocmd TermClose <buffer> bd!')
+        local buftype = vim.api.nvim_buf_get_option(M.term_buf, 'buftype')
+        if buftype == 'terminal' then
+            print('M.term_buf is a terminal buffer')
+        else
+            print('M.term_buf is not a terminal buffer')
+        end
 
         -- Set buffer name to "TERMINAL"
         vim.api.nvim_buf_set_name(M.term_buf, " TERMINAL")

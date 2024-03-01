@@ -15,7 +15,7 @@ function M.setup(config)
 
     local modes = { 'n', 'i', 'v', 's', 'c', 'o', 't' }
     for _, mode in ipairs(modes) do
-        vim.api.nvim_set_keymap(mode, M.config.toggle_key, '<cmd>lua require("sky-term").toggle_term()<CR>',
+        vim.api.nvim_set_keymap(mode, M.config.toggle_key, '<cmd>lua require("sky-term").toggle_term_wrapper()<CR>',
             { noremap = true, silent = true })
     end
 
@@ -47,8 +47,6 @@ function M.toggle_term()
         -- M.term_win = nil
         vim.api.nvim_set_current_buf(M.prev_buf)
     elseif M.term_buf == nil or not vim.api.nvim_buf_is_valid(M.term_buf) then
-        M.prev_buf = vim.api.nvim_get_current_buf()
-
         M.term_buf = vim.api.nvim_create_buf(false, true)
         M.term_win = vim.api.nvim_open_win(M.term_buf, true, {
             relative = "editor",

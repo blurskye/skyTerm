@@ -31,7 +31,7 @@ function M.toggle_term_wrapper()
 
     if buftype == 'terminal' then
         M.toggle_term()
-        print(M.userMode)
+
         if (M.userMode == "i") then
             vim.defer_fn(function() vim.cmd('startinsert') end, 100)
         end
